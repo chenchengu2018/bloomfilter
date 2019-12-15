@@ -5,6 +5,7 @@ import com.google.common.hash.Hashing;
 import java.util.BitSet;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BloomFilter<T> {
     private int numHashFunctions;
@@ -27,6 +28,7 @@ public class BloomFilter<T> {
 
     public boolean put(T item) {
 
+        checkNotNull(item, "Item (%s) must not be null", item);
         for (int i = 1; i <= numHashFunctions; i++) {
             int idx = Hashing.murmur3_128(i).hashInt(item.hashCode()).asInt() % bitSize;
             if (idx < 0) {
@@ -39,6 +41,7 @@ public class BloomFilter<T> {
 
     public boolean mightContain(T item) {
 
+        checkNotNull(item, "Item (%s) must not be null", item);
         for (int i = 1; i <= numHashFunctions; i++) {
             int idx = Hashing.murmur3_128(i).hashInt(item.hashCode()).asInt() % bitSize;
             if (idx < 0) {
